@@ -3,6 +3,7 @@ package archiver
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path"
 	"runtime"
@@ -770,6 +771,7 @@ func (arch *Archiver) Snapshot(ctx context.Context, targets []string, opts Snaps
 	start := time.Now()
 
 	debug.Log("starting snapshot")
+	fmt.Println("tombstone start")
 	rootTreeID, stats, err := func() (restic.ID, ItemStats, error) {
 		tree, err := arch.SaveTree(wctx, "/", atree, arch.loadParentTree(wctx, opts.ParentSnapshot))
 		if err != nil {
@@ -783,6 +785,7 @@ func (arch *Archiver) Snapshot(ctx context.Context, targets []string, opts Snaps
 		return arch.saveTree(wctx, tree)
 	}()
 	debug.Log("saved tree, error: %v", err)
+	fmt.Println("tombstone end")
 
 	t.Kill(nil)
 	werr := t.Wait()

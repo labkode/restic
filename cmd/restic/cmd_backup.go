@@ -135,6 +135,7 @@ func init() {
 // items exist at all.
 func filterExisting(items []string) (result []string, err error) {
 	for _, item := range items {
+		fmt.Println("filterExisting", item)
 		_, err := fs.Lstat(item)
 		if err != nil && os.IsNotExist(errors.Cause(err)) {
 			Warnf("%v does not exist, skipping\n", item)
@@ -381,6 +382,7 @@ func collectTargets(opts BackupOptions, args []string) (targets []string, err er
 	}
 
 	targets = args
+	fmt.Println("collect-targets", targets)
 	targets, err = filterExisting(targets)
 	if err != nil {
 		return nil, err
